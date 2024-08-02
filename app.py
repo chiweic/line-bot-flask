@@ -125,16 +125,15 @@ def message_text(event):
         else:
             
             # look up instance that spin up from store
-            #if user_id in thread_store:
-            #    thread = thread_store[user_id]
-            #else:   
-            #    pass            
-            # based on user_id: 
-            thread = OpenAIThread(
-                api_key = os.getenv('OPENAI_KEY'), 
-                assistant_id = os.getenv('ASSISTANT_ID')
-            )
-
+            if user_id in thread_store:
+                thread = thread_store[user_id]
+            else:               
+                thread = OpenAIThread(
+                    api_key = os.getenv('OPENAI_KEY'), 
+                    assistant_id = os.getenv('ASSISTANT_ID')
+                )
+                thread_store[user_id] = thread
+                
             # show progress/animation
             line_bot_api.show_loading_animation(
                         show_loading_animation_request=ShowLoadingAnimationRequest(
