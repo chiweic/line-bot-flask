@@ -67,9 +67,13 @@ from linebot.v3.messaging import ShowLoadingAnimationRequest
 def message_text(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
-        line_bot_api.show_loading_animation(
-            ShowLoadingAnimationRequest(event.source.user_id)
+        
+        line_bot_api.show_loading_animation
+        (
+            ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5)
         )
+        
+        
 
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
