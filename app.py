@@ -82,13 +82,15 @@ def message_text(event):
         if text == 'profile':
             if isinstance(event.source, UserSource):
                 profile = line_bot_api.get_profile(user_id=event.source.user_id)
-
+                # show animation
                 line_bot_api.show_loading_animation(
                         show_loading_animation_request=ShowLoadingAnimationRequest(
                             chatId=event.source.user_id
                         )
                 ) 
-                
+                # lengthy computation
+                time.sleep(5)
+                # return message
                 line_bot_api.reply_message(
                     ReplyMessageRequest(
                         reply_token=event.reply_token,
