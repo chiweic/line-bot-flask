@@ -122,7 +122,7 @@ def message_text(event):
                 )
 
 
-        elif text == 'chatgpt':
+        else:
             
             # look up instance that spin up from store
             #if user_id in thread_store:
@@ -134,7 +134,16 @@ def message_text(event):
                 api_key = os.getenv('OPENAI_KEY'), 
                 assistant_id = os.getenv('ASSISTANT_ID')
             )
-            chatgpt_reply = thread.qa_polling(user_message='法鼓山的下次禪修活動是什麼時候')
+
+            # show progress/animation
+            line_bot_api.show_loading_animation(
+                        show_loading_animation_request=ShowLoadingAnimationRequest(
+                            chatId=event.source.user_id
+                        )
+                ) 
+            
+            # this will take awhile
+            chatgpt_reply = thread.qa_polling(user_message=text)
             
 
             # reply via messaing API
@@ -145,14 +154,14 @@ def message_text(event):
                     )
                 )
 
-        else:
+        #else:
             # all other no leading command text hint
-            line_bot_api.reply_message(
-                ReplyMessageRequest(
-                    replyToken= event.reply_token,
-                    messages=[TextMessage(text=event.message.text)]
-                )
-            )
+        #    line_bot_api.reply_message(
+        #        ReplyMessageRequest(
+        #            replyToken= event.reply_token,
+        #            messages=[TextMessage(text=event.message.text)]
+        #        )
+        #    )
 
         #line_bot_api.show_loading_animation
         #(
