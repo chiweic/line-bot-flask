@@ -63,17 +63,20 @@ def callback():
     return 'OK'
 
 from linebot.v3.messaging import ShowLoadingAnimationRequest
+import time
 @handler.add(MessageEvent, message=TextMessageContent)
 def message_text(event):
     with ApiClient(configuration) as api_client:
+        
         line_bot_api = MessagingApi(api_client)
         
         line_bot_api.show_loading_animation
         (
             ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5)
         )
-        
-        
+
+        # simulate computation expandsie
+        time.sleep(5)
 
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
