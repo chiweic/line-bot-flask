@@ -6,6 +6,7 @@ from flask import render_template
 # noted we are using version 3
 import os
 import sys
+import logging
 
 
 from flask import Flask, request, abort
@@ -27,6 +28,11 @@ from linebot.v3.messaging import (
     ReplyMessageRequest,
     TextMessage,
 )
+
+
+# set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
 
 app = Flask(__name__)
 
@@ -84,6 +90,9 @@ def message_text(event):
                             TextMessage(text='Status message: ' + str(profile.status_message))
                         ]
                     )
+                )
+                line_bot_api.show_loading_animation_with_http_info(
+
                 )
             else:
                 line_bot_api.reply_message(
