@@ -131,12 +131,12 @@ def message_text(event):
             #    pass            
             # based on user_id: 
             thread = OpenAIThread(
-                api_key=os.getenv('OPENAI_KEY', None), 
-                assistant_id=os.getenv('ASSISTANT_ID', None)
+                api_key=os.getenv('OPENAI_KEY'), 
+                assistant_id=os.getenv('ASSISTANT_ID')
             )
             chatgpt_reply = thread.qa_polling(user_message='法鼓山的下次禪修活動是什麼時候')
             
-            
+
             # reply via messaing API
             line_bot_api.reply_message(
                     ReplyMessageRequest(

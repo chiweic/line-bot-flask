@@ -41,7 +41,9 @@ import logging, os
 if __name__ == '__main__':
     
     logging.basicConfig(level=logging.INFO)
-    
+
+    # fetch the variable from python config
+        
     # retrieve assistant built-previously
     OPENAI_KEY = os.getenv('OPENAI_KEY', None)
     ASSISTANT_ID=os.getenv('ASSISTANT_ID', None)
