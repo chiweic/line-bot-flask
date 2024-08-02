@@ -43,10 +43,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     
     # retrieve assistant built-previously
-    OPENAI_KEY = 'sk-proj-Yb7jEqkkHRXqNmykqp3rT3BlbkFJxNGm170j6k9Vx61GnFFV'
-    ASSISTANT_ID='asst_jJvDQj9f43UFWRMY0Bsd6xZV'
+    #OPENAI_KEY = 'sk-proj-Yb7jEqkkHRXqNmykqp3rT3BlbkFJxNGm170j6k9Vx61GnFFV'
+    #ASSISTANT_ID='asst_jJvDQj9f43UFWRMY0Bsd6xZV'
     # instance that resemble conversation with a user    
-    thread = OpenAIThread(api_key=OPENAI_KEY, assistant_id=ASSISTANT_ID)
+    #thread = OpenAIThread(api_key=OPENAI_KEY, assistant_id=ASSISTANT_ID)
     # turns...
-    message = thread.qa_polling(user_message='法鼓山的下次禪修活動是什麼時候')
-    logging.info(message.data[0].content[0].text.value)
+    #message = thread.qa_polling(user_message='法鼓山的下次禪修活動是什麼時候')
+    #logging.info(message.data[0].content[0].text.value)
