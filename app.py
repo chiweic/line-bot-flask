@@ -96,6 +96,13 @@ def message_text(event):
                             chatId=event.source.user_id
                         )
                 )
+                line_bot_api.reply_message(
+                    ReplyMessageRequest(
+                        reply_token=event.reply_token,
+                        messages=[TextMessage(text="This is the end of message")]
+                    )
+                )
+
             else:
                 line_bot_api.reply_message(
                     ReplyMessageRequest(
