@@ -66,8 +66,9 @@ def callback():
 from linebot.v3.messaging import ShowLoadingAnimationRequest
 import time
 @handler.add(MessageEvent, message=TextMessageContent)
-def message_text(event):
+def message_text(event):    
     text = event.message.text
+    app.logger.info('received message: {}'.format(text))
     with ApiClient(configuration) as api_client:
         # instance of line bot api
         line_bot_api = MessagingApi(api_client)
