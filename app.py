@@ -29,6 +29,8 @@ from linebot.v3.messaging import (
     TextMessage,
 )
 
+from model import OpenAIThread
+
 
 # set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
@@ -52,6 +54,13 @@ configuration = Configuration(
     access_token=channel_access_token
 )
 
+# global instance of the model store, with user_id as key
+# this keep track of thread/user
+thread_store = {}
+
+
+
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -74,6 +83,7 @@ import time
 @handler.add(MessageEvent, message=TextMessageContent)
 def message_text(event):    
     text = event.message.text
+    user_id=event.source.user_id
     app.logger.info('received message: {}'.format(text))
     with ApiClient(configuration) as api_client:
         # instance of line bot api
@@ -110,6 +120,31 @@ def message_text(event):
                         messages=[TextMessage(text="Bot can't use profile API without user ID")]
                     )
                 )
+
+
+        elif text == 'chatgpt':
+            
+            # look up instance that spin up from store
+            #if user_id in thread_store:
+            #    thread = thread_store[user_id]
+            #else:   
+            #    pass            
+            # based on user_id: 
+            thread = OpenAIThread(
+                api_key=os.getenv('OPENAI_KEY', None), 
+                assistant_id=os.getenv('ASSISTANT_ID', None)
+            )
+            chatgpt_reply = thread.qa_polling(user_message='法鼓山的下次禪修活動是什麼時候')
+            
+            
+            # reply via messaing API
+            line_bot_api.reply_message(
+                    ReplyMessageRequest(
+                        reply_token=event.reply_token,
+                        messages=[TextMessage(text=chatgpt_reply.data[0].content[0].text.value)]
+                    )
+                )
+
         else:
             # all other no leading command text hint
             line_bot_api.reply_message(
