@@ -18,13 +18,14 @@ from linebot.v3.exceptions import (
 from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent,
+    UserSource
 )
 from linebot.v3.messaging import (
     Configuration,
     ApiClient,
     MessagingApi,
     ReplyMessageRequest,
-    TextMessage
+    TextMessage,
 )
 
 app = Flask(__name__)
@@ -66,24 +67,43 @@ from linebot.v3.messaging import ShowLoadingAnimationRequest
 import time
 @handler.add(MessageEvent, message=TextMessageContent)
 def message_text(event):
+    text = event.message.text
     with ApiClient(configuration) as api_client:
-        
+        # instance of line bot api
         line_bot_api = MessagingApi(api_client)
-        
-        line_bot_api.show_loading_animation
-        (
-            ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5)
-        )
-
-        # simulate computation expandsie
-        time.sleep(5)
-
-        line_bot_api.reply_message_with_http_info(
-            ReplyMessageRequest(
-                reply_token=event.reply_token,
-                messages=[TextMessage(text=event.message.text)]
+        if text == 'profile':
+            if isinstance(event.source, UserSource):
+                profile = line_bot_api.get_profile(user_id=event.source.user_id)
+                line_bot_api.reply_message(
+                    ReplyMessageRequest(
+                        reply_token=event.reply_token,
+                        messages=[
+                            TextMessage(text='Display name: ' + profile.display_name),
+                            TextMessage(text='Status message: ' + str(profile.status_message))
+                        ]
+                    )
+                )
+            else:
+                line_bot_api.reply_message(
+                    ReplyMessageRequest(
+                        reply_token=event.reply_token,
+                        messages=[TextMessage(text="Bot can't use profile API without user ID")]
+                    )
+                )
+        else:
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    replyToken= event.reply_token,
+                    messages=[TextMessage(text=event.message.text)]
+                )
             )
-        )
+
+        #line_bot_api.show_loading_animation
+        #(
+        #    ShowLoadingAnimationRequest(chatId=event.source.user_id, loadingSeconds=5)
+        #)
+
+        
 
 
 @app.route("/")
