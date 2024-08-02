@@ -78,9 +78,17 @@ def message_text(event):
     with ApiClient(configuration) as api_client:
         # instance of line bot api
         line_bot_api = MessagingApi(api_client)
+        # incoming text == profile
         if text == 'profile':
             if isinstance(event.source, UserSource):
                 profile = line_bot_api.get_profile(user_id=event.source.user_id)
+
+                line_bot_api.show_loading_animation(
+                        show_loading_animation_request=ShowLoadingAnimationRequest(
+                            chatId=event.source.user_id
+                        )
+                ) 
+                
                 line_bot_api.reply_message(
                     ReplyMessageRequest(
                         reply_token=event.reply_token,
@@ -91,18 +99,8 @@ def message_text(event):
                         ]
                     )
                 )
-                line_bot_api.show_loading_animation(
-                        show_loading_animation_request=ShowLoadingAnimationRequest(
-                            chatId=event.source.user_id
-                        )
-                )
-                line_bot_api.reply_message(
-                    ReplyMessageRequest(
-                        reply_token=event.reply_token,
-                        messages=[TextMessage(text="This is the end of message")]
-                    )
-                )
-
+                
+                
             else:
                 line_bot_api.reply_message(
                     ReplyMessageRequest(
@@ -111,6 +109,7 @@ def message_text(event):
                     )
                 )
         else:
+            # all other no leading command text hint
             line_bot_api.reply_message(
                 ReplyMessageRequest(
                     replyToken= event.reply_token,
