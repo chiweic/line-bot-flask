@@ -37,14 +37,14 @@ class OpenAIThread():
             return messages
 
 
-import logging
+import logging, os
 if __name__ == '__main__':
     
     logging.basicConfig(level=logging.INFO)
     
     # retrieve assistant built-previously
-    #OPENAI_KEY = 'sk-proj-Yb7jEqkkHRXqNmykqp3rT3BlbkFJxNGm170j6k9Vx61GnFFV'
-    #ASSISTANT_ID='asst_jJvDQj9f43UFWRMY0Bsd6xZV'
+    OPENAI_KEY = os.getenv('OPENAI_KEY', None)
+    ASSISTANT_ID=os.getenv('ASSISTANT_ID', None)
     # instance that resemble conversation with a user    
     #thread = OpenAIThread(api_key=OPENAI_KEY, assistant_id=ASSISTANT_ID)
     # turns...
