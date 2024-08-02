@@ -91,8 +91,10 @@ def message_text(event):
                         ]
                     )
                 )
-                line_bot_api.show_loading_animation_with_http_info(
-
+                line_bot_api.show_loading_animation(
+                        show_loading_animation_request=ShowLoadingAnimationRequest(
+                            chatId=event.source.user_id
+                        )
                 )
             else:
                 line_bot_api.reply_message(
