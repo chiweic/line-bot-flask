@@ -78,6 +78,7 @@ def message_text(event):
                     ReplyMessageRequest(
                         reply_token=event.reply_token,
                         messages=[
+                            TextMessage(text='UserId: '+ event.source.user_id),
                             TextMessage(text='Display name: ' + profile.display_name),
                             TextMessage(text='Status message: ' + str(profile.status_message))
                         ]
