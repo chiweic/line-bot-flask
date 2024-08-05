@@ -59,8 +59,6 @@ configuration = Configuration(
 thread_store = {}
 
 
-
-
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
